@@ -26,18 +26,21 @@ def predict():
         features = np.array([[spread, moneyline, total, team_wins, team_losses, opponent_wins, opponent_losses]])
 
         prediction = model.predict(features)[0]
+        proba = model.predict_proba(features)[0][1]  # Probability they cover
 
-        result = "YES — they will cover the spread." if prediction == 1 else "NO — they will not cover the spread."
+        if prediction == 1:
+            result = f"YES — they will cover the spread. ({round(proba * 100, 2)}% confidence)"
+        else:
+            result = f"NO — they will not cover the spread. ({round((1 - proba) * 100, 2)}% confidence)"
+
         return render_template('index.html', prediction=result)
-    
+
     except ValueError:
         return render_template('index.html', prediction="Invalid input. Please enter valid numbers.")
-
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
     app.run(debug=False, host='0.0.0.0', port=port)
 
-
-if not os.path.exists("betting_model.pkl"):
-    raise FileNotFoundError("Model file not found. Please train the model and save it as betting_model.pkl.")
+if not os.path.exists("xgboost_betting_model.pkl"):
+    raise FileNotFoundError("Model file not found. Please train the model and save it as xgboost_betting_model.pkl.")

@@ -7,11 +7,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="toggle-wrapper">
+        <label class="switch">
+            <input type="checkbox" id="darkToggle" onchange="toggleDarkMode()">
+            <span class="slider"></span>
+        </label>
+        <span class="toggle-label">Dark Mode</span>
+    </div>
+
     <div class="container">
         <h1>NBA Spread Predictor</h1>
         <p class="subheading">Enter betting lines to see if a team is likely to cover the spread</p>
+        
+        <div id="loading" style="display:none;" class="prediction-box">
+            <h2>Predicting...</h2>
+        </div>
 
          <form method="post" action="/predict" class="form-grid">
+            <div class="form-group">
+                <label>Team</label>
+                <select id="team" name="team" onchange="fillTeamRecord()" required></select>
+            </div>
+
+            <div class="form-group">
+                <label>Opponent</label>
+                <select id="opponent" name="opponent" onchange="fillOpponentRecord()" required></select>
+            </div>
 
             <div class="form-group">
                 <label>Spread</label>
@@ -30,26 +51,69 @@
 
             <div class="form-group">
                 <label>Team Wins</label>
-                <input type="number" step="1" name="team_wins" placeholder="e.g. 52" required>
+                <input type="number" step="1" name="team_wins" id="team_wins" readonly required>
             </div>
 
             <div class="form-group">
                 <label>Team Losses</label>
-                <input type="number" step="1" name="team_losses" placeholder="e.g. 30" required>
+                <input type="number" step="1" name="team_losses" id="team_losses" readonly required>
             </div>
 
             <div class="form-group">
                 <label>Opponent Wins</label>
-                <input type="number" step="1" name="opponent_wins" placeholder="e.g. 48" required>
+                <input type="number" step="1" name="opponent_wins" id="opponent_wins" readonly required>
             </div>
 
             <div class="form-group">
                 <label>Opponent Losses</label>
-                <input type="number" step="1" name="opponent_losses" placeholder="e.g. 34" required>
+                <input type="number" step="1" name="opponent_losses" id="opponent_losses" readonly required>
             </div>
 
             <button type="submit">Predict</button>
         </form>
+
+        <script>
+            const teamRecords = {
+                "Golden State Warriors": { wins: 48, losses: 34 },
+                "Houston Rockets": { wins: 52, losses: 30 },
+                "Boston Celtics": { wins: 64, losses: 18 },
+                "Miami Heat": { wins: 46, losses: 36 }
+            };
+
+            const teamSelect = document.getElementById("team");
+            const opponentSelect = document.getElementById("opponent");
+
+            Object.keys(teamRecords).forEach(team => {
+                const opt1 = document.createElement("option");
+                opt1.value = team;
+                opt1.textContent = team;
+                teamSelect.appendChild(opt1);
+
+                const opt2 = document.createElement("option");
+                opt2.value = team;
+                opt2.textContent = team;
+                opponentSelect.appendChild(opt2);
+            });
+
+            function fillTeamRecord() {
+                const team = teamSelect.value;
+                document.getElementById("team_wins").value = teamRecords[team].wins;
+                document.getElementById("team_losses").value = teamRecords[team].losses;
+            }
+
+            function fillOpponentRecord() {
+                const opp = opponentSelect.value;
+                document.getElementById("opponent_wins").value = teamRecords[opp].wins;
+                document.getElementById("opponent_losses").value = teamRecords[opp].losses;
+            }
+
+            // Add loading spinner on form submit
+            document.querySelector("form").addEventListener("submit", function () {
+                document.getElementById("loading").style.display = "block";
+            });
+        </script>
+
+
 
 
 
@@ -64,5 +128,12 @@
             <p>Project by Jalen Broxie • Data Science Portfolio</p>
         </footer>
     </div>
+    
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark');
+        }
+    </script>
+
 </body>
 </html>
