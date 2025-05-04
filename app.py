@@ -2,9 +2,11 @@ from flask import Flask, render_template, request
 import joblib
 import numpy as np
 import os
-
 from nba_api.stats.endpoints import leaguestandings
 import time
+from nba_api.stats.static import teams
+
+nba_teams = sorted([team['full_name'] for team in teams.get_teams()])
 
 def get_team_record(team_name):
     try:
@@ -28,7 +30,7 @@ model = joblib.load('xgboost_betting_model.pkl')
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html', nba_teams=nba_teams)
 
 @app.route('/predict', methods=['POST'])
 
@@ -55,7 +57,7 @@ def predict():
         else:
             result = f"NO — {team} will not cover the spread. ({round((1 - proba) * 100, 2)}% confidence)"
 
-        return render_template('index.html', prediction=result)
+        return render_template('index.html', prediction=result, nba_teams=nba_teams)
 
     except ValueError:
         return render_template('index.html', prediction="Invalid input. Please enter valid numbers.")

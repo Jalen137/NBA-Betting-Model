@@ -26,12 +26,22 @@
          <form method="post" action="/predict" class="form-grid">
             <div class="form-group">
                 <label>Team</label>
-                <select id="team" name="team" onchange="fillTeamRecord()" required></select>
+                <select name="team" id="team" required>
+                  <option disabled selected value="">Select Team</option>
+                  {% for team in nba_teams %}
+                    <option value="{{ team }}">{{ team }}</option>
+                  {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
                 <label>Opponent</label>
-                <select id="opponent" name="opponent" onchange="fillOpponentRecord()" required></select>
+                <select name="opponent" id="opponent" required>
+                  <option disabled selected value="">Select Opponent</option>
+                  {% for team in nba_teams %}
+                    <option value="{{ team }}">{{ team }}</option>
+                  {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
