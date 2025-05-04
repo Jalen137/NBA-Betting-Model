@@ -10,6 +10,9 @@ from flask_caching import Cache
 
 nba_teams = sorted([team['full_name'] for team in teams.get_teams()])
 
+app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
+
 @cache.memoize(timeout=3600)  # Cache for 1 hour
 def get_team_record(team_name):
     standings = leaguestandings.LeagueStandings(season="2023-24").get_data_frames()[0]
@@ -21,10 +24,6 @@ def get_team_record(team_name):
         return wins, losses
     else:
         return None, None
-
-
-app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 
 # Load the trained model
 model = joblib.load('xgboost_betting_model.pkl')
