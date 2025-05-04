@@ -56,7 +56,7 @@ def predict():
         prediction = model.predict(features)[0]
         proba = model.predict_proba(features)[0][1]
 
-                confidence = round(proba * 100, 2) if prediction == 1 else round((1 - proba) * 100, 2)
+        confidence = round(proba * 100, 2) if prediction == 1 else round((1 - proba) * 100, 2)
         result = f"{team} will {'cover' if prediction == 1 else 'not cover'} the spread. ({confidence}% confidence)"
 
         # Log to CSV
