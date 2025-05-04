@@ -1,113 +1,96 @@
-# NBA Spread Prediction App
+# NBA Spread Predictor
 
-This project is a machine learning web application that predicts whether an NBA team will cover the point spread in a given game. It uses a Random Forest classifier trained on historical NBA betting data and is served through a Flask web interface.
+A Flask web app that uses machine learning to predict whether an NBA team will cover the spread based on betting lines and recent performance. Built with XGBoost, deployed on Render, and styled with a responsive, dark-mode-enabled UI.
 
-## Project Overview
+## Live Demo
 
-Users can input basic game-level betting information such as:
+[Click here to try it live](https://your-app-name.onrender.com)  
+Replace with your actual Render URL
 
-- Point Spread
-- Moneyline
-- Over/Under Total
-
-Based on the trained model, the app predicts whether the team is likely to cover the spread.
-
-The web app is built with Flask and styled using custom HTML/CSS. It is designed to be simple, fast, and extendable.
+---
 
 ## Features
 
-- Predict spread coverage using a trained Random Forest model
-- User-friendly web interface built with Flask
-- Custom CSS styling for a clean layout
-- Fully functional on localhost
-- Easily deployable to platforms like Render or Railway
+- Predicts if a team will cover the spread
+- Inputs: spread, moneyline, total points, team records
+- Team dropdowns with auto-filled win/loss stats
+- Displays model confidence score (percentage)
+- Mobile-friendly layout with dark mode toggle
+- Loading animation during prediction
+
+---
+
+## Model Information
+
+- Algorithm: XGBoost Classifier
+- Accuracy: approximately 77.5% on validation set
+- Features used:
+  - Spread
+  - Moneyline
+  - Over/Under total
+  - Team wins and losses
+  - Opponent wins and losses
+
+---
+
+## How It Works
+
+1. User selects two teams and enters the betting lines
+2. The app auto-fills win/loss records from a JSON object
+3. The model predicts if the selected team will cover the spread
+4. The result and confidence level are displayed
+
+---
 
 ## Tech Stack
 
 - Python
 - Flask
-- Scikit-learn
-- Pandas
+- XGBoost
+- scikit-learn
 - HTML/CSS
-- Jupyter Notebook (for model development)
+- JavaScript
+- Hosted on Render
 
-## File Structure
+---
 
-\```
+## Folder Structure
+
 nba_predictor/
-├── app.py                  # Flask backend
-├── betting_model.pkl       # Trained model (not tracked in GitHub)
+├── app.py
+├── xgboost_betting_model.pkl
+├── team_records.json
+├── requirements.txt
+├── Procfile
 ├── templates/
-│   └── index.html          # Frontend UI
+│ └── index.html
 ├── static/
-│   └── style.css           # Custom styles
-├── notebooks/
-│   └── model_dev.ipynb     # Jupyter notebook for model training
-\```
-
-## Getting Started
-
-### Prerequisites
-
-- Python 3.7+
-- pip
-
-### Install dependencies
-
-\```bash
-pip install flask pandas scikit-learn joblib
-\```
-
-### Run the app
-
-\```bash
-python app.py
-\```
-
-Then open your browser and go to:
-
-http://127.0.0.1:5000/
+│ └── style.css
 
 
-### Using the App
-
-1. Enter the spread, moneyline, and total points for an NBA game
-2. Submit the form
-3. The app returns a prediction on whether the team will cover the spread
-
-## Model Information
-
-The model is trained on historical NBA game data with columns including:
-
-- Spread
-- Moneyline
-- Over/Under total
-- Final scores (used to derive the target)
-
-The model type is a `RandomForestClassifier`. You can retrain or tune it using the included Jupyter notebook.
-
-## Note
-
-The trained model file (`betting_model.pkl`) is excluded from this repository due to file size constraints.  
-To use the app locally:
-
-1. Open the Jupyter notebook in the `notebooks/` folder  
-2. Run all cells to train the model  
-3. Save the model with:
-
-\```python
-joblib.dump(model, 'betting_model.pkl')
-\```
-
-Then move the file to the main `nba_predictor/` directory.
+---
 
 ## Future Improvements
 
-- Add more features: home/away, opponent strength, rest days
-- Improve model accuracy with XGBoost or LightGBM
-- Add prediction confidence levels
-- Deploy the app publicly via Render or Railway
+- Pull live records from NBA API
+- Add rolling average stats (last 3 games)
+- Save predictions and compare to actual outcomes
+- Create login and user prediction history system
 
-## License
+---
 
-This project is for educational purposes and is not intended for actual betting use.
+## Author
+
+Jalen Broxie  
+Data Science Student at Washington & Jefferson College  
+[LinkedIn](https://www.linkedin.com/) • [Portfolio](#) • [Email](mailto:your@email.com)
+
+---
+
+## To Run Locally
+
+```bash
+git clone https://github.com/yourusername/nba-spread-predictor.git
+cd nba-spread-predictor
+pip install -r requirements.txt
+python app.py
