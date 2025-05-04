@@ -1,0 +1,6 @@
+{
+  "Golden State Warriors": { "wins": 48, "losses": 34 },
+  "Houston Rockets": { "wins": 52, "losses": 30 },
+  "Boston Celtics": { "wins": 64, "losses": 18 },
+  "Miami Heat": { "wins": 46, "losses": 36 }
+}
