@@ -33,8 +33,11 @@ def predict():
     except ValueError:
         return render_template('index.html', prediction="Invalid input. Please enter valid numbers.")
 
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)
+
 
 if not os.path.exists("betting_model.pkl"):
     raise FileNotFoundError("Model file not found. Please train the model and save it as betting_model.pkl.")
