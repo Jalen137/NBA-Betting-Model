@@ -92,7 +92,7 @@ def predict():
         return render_template("index.html", prediction=result, nba_teams=nba_teams)
 
     except Exception as e:
-        return render_template("index.html", prediction="Something went wrong. Please check your inputs.", nba_teams=nba_teams)
+        return render_template("index.html", prediction=f"Error: {str(e)}", nba_teams=nba_teams)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
