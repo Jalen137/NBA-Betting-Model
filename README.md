@@ -4,8 +4,8 @@ A Flask web app that uses machine learning to predict whether an NBA team will c
 
 ## Live Demo
 
-[Click here to try it live](https://your-app-name.onrender.com)  
-Replace with your actual Render URL
+[Click here to try it live]([https://your-app-name.onrender.com](https://nba-betting-model.onrender.com/predict))  
+
 
 ---
 
@@ -83,7 +83,7 @@ nba_predictor/
 
 Jalen Broxie  
 Data Science Student at Washington & Jefferson College  
-[LinkedIn](https://www.linkedin.com/) • [Portfolio](#) • [Email](mailto:your@email.com)
+[LinkedIn]([https://www.linkedin.com/](https://www.linkedin.com/in/jalen-broxie-275b85324/)) • [Portfolio](https://jalen137.github.io/Personal-website/) • [Email](mailto:broxiejm@washjeff.edu)
 
 ---
 
