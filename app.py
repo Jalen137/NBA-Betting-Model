@@ -27,19 +27,15 @@ if not os.path.exists("prediction_log.csv"):
 # Load all NBA teams
 nba_teams = sorted([team["full_name"] for team in teams.get_teams()])
 
-@cache.memoize(timeout=3600)
+@cache.memoize(timeout=3600)  # Cache for 1 hour
 def get_team_record(team_name):
-    from nba_api.stats.library.parameters import SeasonAll
-    import requests
-    from nba_api.stats.library.parameters import Season
-
-    # Add custom headers so Render doesn't get blocked
-    from nba_api.stats.library.parameters import Season
     from nba_api.stats.library.http import NBAStatsHTTP
 
+    # Set custom headers
     NBAStatsHTTP.headers.update({
-        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)",
-        "Accept-Language": "en-US,en;q=0.9"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
+        "Accept-Language": "en-US,en;q=0.9",
+        "Referer": "https://www.nba.com/"
     })
 
     standings = leaguestandings.LeagueStandings(season="2023-24").get_data_frames()[0]
@@ -49,7 +45,8 @@ def get_team_record(team_name):
         wins = int(team_row.iloc[0]['Win'])
         losses = int(team_row.iloc[0]['Loss'])
         return wins, losses
-    return None, None
+    else:
+        return None, None
 
 
 @app.route('/')
