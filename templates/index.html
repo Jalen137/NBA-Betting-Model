@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NBA Spread Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>NBA Spread Prediction</h1>
+    <form method="post" action="/predict">
+        <label>Spread:</label><br>
+        <input type="text" name="spread"><br>
+
+        <label>Moneyline:</label><br>
+        <input type="text" name="moneyline"><br>
+
+        <label>Total Points:</label><br>
+        <input type="text" name="total"><br><br>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+        <h2>Prediction: {{ prediction }}</h2>
+    {% endif %}
+</body>
+</html>

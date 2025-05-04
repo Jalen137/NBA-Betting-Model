@@ -1,0 +1,17 @@
+body {
+    font-family: Arial;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 50px;
+}
+
+input[type="text"] {
+    padding: 8px;
+    margin: 8px;
+    width: 200px;
+}
+
+input[type="submit"] {
+    padding: 10px 20px;
+    font-weight: bold;
+}
