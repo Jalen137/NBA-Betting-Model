@@ -5,25 +5,26 @@ import os
 from nba_api.stats.endpoints import leaguestandings
 import time
 from nba_api.stats.static import teams
+from flask_caching import Cache
+
 
 nba_teams = sorted([team['full_name'] for team in teams.get_teams()])
 
+@cache.memoize(timeout=3600)  # Cache for 1 hour
 def get_team_record(team_name):
-    try:
-        standings = leaguestandings.LeagueStandings(season="2023-24").get_data_frames()[0]
-        team_row = standings[standings['TeamName'] == team_name]
+    standings = leaguestandings.LeagueStandings(season="2023-24").get_data_frames()[0]
+    team_row = standings[standings['TeamName'] == team_name]
 
-        if not team_row.empty:
-            wins = int(team_row.iloc[0]['Win'])
-            losses = int(team_row.iloc[0]['Loss'])
-            return wins, losses
-        else:
-            return None, None
-    except Exception as e:
-        print("Error fetching record:", e)
+    if not team_row.empty:
+        wins = int(team_row.iloc[0]['Win'])
+        losses = int(team_row.iloc[0]['Loss'])
+        return wins, losses
+    else:
         return None, None
 
+
 app = Flask(__name__)
+cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 
 # Load the trained model
 model = joblib.load('xgboost_betting_model.pkl')

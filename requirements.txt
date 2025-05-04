@@ -127,3 +127,4 @@ Werkzeug==2.3.6
 xgboost==3.0.0
 yfinance==0.2.44
 nba_api
+Flask-Caching

@@ -43,6 +43,15 @@ h1 {
     color: var(--text-color);
 }
 
+h3 {
+    text-align: left;
+    margin-top: 20px;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+
 .subheading {
     font-size: 0.95rem;
     color: #5c6b7a;

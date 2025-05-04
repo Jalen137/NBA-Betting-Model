@@ -23,109 +23,48 @@
             <h2>Predicting...</h2>
         </div>
 
-         <form method="post" action="/predict" class="form-grid">
-            <div class="form-group">
-                <label>Team</label>
-                <select name="team" id="team" required>
-                  <option disabled selected value="">Select Team</option>
-                  {% for team in nba_teams %}
-                    <option value="{{ team }}">{{ team }}</option>
-                  {% endfor %}
-                </select>
+        <form method="post" action="/predict" class="form-grid">
+            <h3>Selected Team</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="team">Team</label>
+                    <select name="team" id="team" required>
+                        <option disabled selected value="">Select Team</option>
+                        {% for team in nba_teams %}
+                            <option value="{{ team }}">{{ team }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Moneyline</label>
+                    <input type="text" name="moneyline" placeholder="e.g. -140" required>
+                </div>
+                <div class="form-group">
+                    <label>Spread</label>
+                    <input type="text" name="spread" placeholder="e.g. +7.5" required>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label>Opponent</label>
-                <select name="opponent" id="opponent" required>
-                  <option disabled selected value="">Select Opponent</option>
-                  {% for team in nba_teams %}
-                    <option value="{{ team }}">{{ team }}</option>
-                  {% endfor %}
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Spread</label>
-                <input type="number" step="0.1" name="spread" placeholder="e.g. -2.5" required>
-            </div>
-
-            <div class="form-group">
-                <label>Moneyline</label>
-                <input type="number" step="1" name="moneyline" placeholder="e.g. -140" required>
+            <h3>Opponent</h3>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="opponent">Opponent</label>
+                    <select name="opponent" id="opponent" required>
+                        <option disabled selected value="">Select Opponent</option>
+                        {% for team in nba_teams %}
+                            <option value="{{ team }}">{{ team }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
 
             <div class="form-group">
                 <label>Total Points</label>
-                <input type="number" step="0.1" name="total" placeholder="e.g. 203.5" required>
-            </div>
-
-            <div class="form-group">
-                <label>Team Wins</label>
-                <input type="number" step="1" name="team_wins" id="team_wins" readonly required>
-            </div>
-
-            <div class="form-group">
-                <label>Team Losses</label>
-                <input type="number" step="1" name="team_losses" id="team_losses" readonly required>
-            </div>
-
-            <div class="form-group">
-                <label>Opponent Wins</label>
-                <input type="number" step="1" name="opponent_wins" id="opponent_wins" readonly required>
-            </div>
-
-            <div class="form-group">
-                <label>Opponent Losses</label>
-                <input type="number" step="1" name="opponent_losses" id="opponent_losses" readonly required>
+                <input type="text" name="total" placeholder="e.g. 203.5" required>
             </div>
 
             <button type="submit">Predict</button>
         </form>
-
-        <script>
-            const teamRecords = {
-                "Golden State Warriors": { wins: 48, losses: 34 },
-                "Houston Rockets": { wins: 52, losses: 30 },
-                "Boston Celtics": { wins: 64, losses: 18 },
-                "Miami Heat": { wins: 46, losses: 36 }
-            };
-
-            const teamSelect = document.getElementById("team");
-            const opponentSelect = document.getElementById("opponent");
-
-            Object.keys(teamRecords).forEach(team => {
-                const opt1 = document.createElement("option");
-                opt1.value = team;
-                opt1.textContent = team;
-                teamSelect.appendChild(opt1);
-
-                const opt2 = document.createElement("option");
-                opt2.value = team;
-                opt2.textContent = team;
-                opponentSelect.appendChild(opt2);
-            });
-
-            function fillTeamRecord() {
-                const team = teamSelect.value;
-                document.getElementById("team_wins").value = teamRecords[team].wins;
-                document.getElementById("team_losses").value = teamRecords[team].losses;
-            }
-
-            function fillOpponentRecord() {
-                const opp = opponentSelect.value;
-                document.getElementById("opponent_wins").value = teamRecords[opp].wins;
-                document.getElementById("opponent_losses").value = teamRecords[opp].losses;
-            }
-
-            // Add loading spinner on form submit
-            document.querySelector("form").addEventListener("submit", function () {
-                document.getElementById("loading").style.display = "block";
-            });
-        </script>
-
-
-
-
 
         {% if prediction %}
         <div class="prediction-box">
@@ -143,7 +82,11 @@
         function toggleDarkMode() {
             document.body.classList.toggle('dark');
         }
-    </script>
 
+        // Show loading spinner after form submit
+        document.querySelector("form").addEventListener("submit", function () {
+            document.getElementById("loading").style.display = "block";
+        });
+    </script>
 </body>
 </html>
