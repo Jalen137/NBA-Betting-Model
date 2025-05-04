@@ -2,8 +2,6 @@ from flask import Flask, render_template, request
 import joblib
 import numpy as np
 import os
-from nba_api.stats.endpoints import leaguestandings
-from nba_api.stats.static import teams
 from flask_caching import Cache
 import csv
 from datetime import datetime
@@ -15,39 +13,60 @@ cache = Cache(app, config={'CACHE_TYPE': 'SimpleCache'})
 if not os.path.exists("xgboost_betting_model.pkl"):
     raise FileNotFoundError("Model file not found. Please train and save it as xgboost_betting_model.pkl.")
 
-# Load model
 model = joblib.load("xgboost_betting_model.pkl")
 
-# Create CSV log if it doesn't exist
+# Create CSV log if needed
 if not os.path.exists("prediction_log.csv"):
     with open("prediction_log.csv", mode="w", newline="") as file:
         writer = csv.writer(file)
         writer.writerow(["Timestamp", "Team", "Opponent", "Spread", "Moneyline", "Total", "Prediction", "Confidence"])
 
-# Load all NBA teams
-nba_teams = sorted([team["full_name"] for team in teams.get_teams()])
+nba_teams = sorted([
+    "Boston Celtics", "Milwaukee Bucks", "Philadelphia 76ers", "Cleveland Cavaliers",
+    "New York Knicks", "Miami Heat", "Atlanta Hawks", "Brooklyn Nets",
+    "Chicago Bulls", "Toronto Raptors", "Indiana Pacers", "Charlotte Hornets",
+    "Orlando Magic", "Washington Wizards", "Detroit Pistons", "Denver Nuggets",
+    "Memphis Grizzlies", "Sacramento Kings", "Phoenix Suns", "Los Angeles Clippers",
+    "Golden State Warriors", "Los Angeles Lakers", "Minnesota Timberwolves",
+    "New Orleans Pelicans", "Oklahoma City Thunder", "Dallas Mavericks",
+    "Portland Trail Blazers", "Utah Jazz", "San Antonio Spurs", "Houston Rockets"
+])
 
-@cache.memoize(timeout=3600)  # Cache for 1 hour
+team_records = {
+    "Boston Celtics": (64, 18),
+    "Milwaukee Bucks": (49, 33),
+    "Philadelphia 76ers": (47, 35),
+    "Cleveland Cavaliers": (48, 34),
+    "New York Knicks": (50, 32),
+    "Miami Heat": (46, 36),
+    "Atlanta Hawks": (36, 46),
+    "Brooklyn Nets": (32, 50),
+    "Chicago Bulls": (39, 43),
+    "Toronto Raptors": (25, 57),
+    "Indiana Pacers": (47, 35),
+    "Charlotte Hornets": (21, 61),
+    "Orlando Magic": (47, 35),
+    "Washington Wizards": (15, 67),
+    "Detroit Pistons": (14, 68),
+    "Denver Nuggets": (57, 25),
+    "Memphis Grizzlies": (27, 55),
+    "Sacramento Kings": (46, 36),
+    "Phoenix Suns": (49, 33),
+    "Los Angeles Clippers": (51, 31),
+    "Golden State Warriors": (46, 36),
+    "Los Angeles Lakers": (47, 35),
+    "Minnesota Timberwolves": (56, 26),
+    "New Orleans Pelicans": (49, 33),
+    "Oklahoma City Thunder": (57, 25),
+    "Dallas Mavericks": (50, 32),
+    "Portland Trail Blazers": (21, 61),
+    "Utah Jazz": (31, 51),
+    "San Antonio Spurs": (22, 60),
+    "Houston Rockets": (41, 41)
+}
+
 def get_team_record(team_name):
-    from nba_api.stats.library.http import NBAStatsHTTP
-
-    # Set custom headers
-    NBAStatsHTTP.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
-        "Accept-Language": "en-US,en;q=0.9",
-        "Referer": "https://www.nba.com/"
-    })
-
-    standings = leaguestandings.LeagueStandings(season="2023-24").get_data_frames()[0]
-    team_row = standings[standings['TeamName'] == team_name]
-
-    if not team_row.empty:
-        wins = int(team_row.iloc[0]['Win'])
-        losses = int(team_row.iloc[0]['Loss'])
-        return wins, losses
-    else:
-        return None, None
-
+    return team_records.get(team_name, (None, None))
 
 @app.route('/')
 def home():
@@ -75,7 +94,6 @@ def predict():
 
         result = f"{team} will {'cover' if prediction == 1 else 'not cover'} the spread. ({confidence}% confidence)"
 
-        # Save prediction to CSV
         with open("prediction_log.csv", mode="a", newline="") as file:
             writer = csv.writer(file)
             writer.writerow([
