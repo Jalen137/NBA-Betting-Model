@@ -7,6 +7,10 @@ import time
 from nba_api.stats.static import teams
 from flask_caching import Cache
 
+if not os.path.exists("prediction_log.csv"):
+    with open('prediction_log.csv', mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Timestamp", "Team", "Opponent", "Spread", "Moneyline", "Total", "Prediction", "Confidence"])
 
 nba_teams = sorted([team['full_name'] for team in teams.get_teams()])
 
@@ -52,10 +56,26 @@ def predict():
         prediction = model.predict(features)[0]
         proba = model.predict_proba(features)[0][1]
 
-        if prediction == 1:
-            result = f"YES — {team} will cover the spread. ({round(proba * 100, 2)}% confidence)"
-        else:
-            result = f"NO — {team} will not cover the spread. ({round((1 - proba) * 100, 2)}% confidence)"
+                confidence = round(proba * 100, 2) if prediction == 1 else round((1 - proba) * 100, 2)
+        result = f"{team} will {'cover' if prediction == 1 else 'not cover'} the spread. ({confidence}% confidence)"
+
+        # Log to CSV
+        import csv
+        from datetime import datetime
+
+        with open('prediction_log.csv', mode='a', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow([
+                datetime.now().strftime("%Y-%m-%d %H:%M"),
+                team,
+                opponent,
+                spread,
+                moneyline,
+                total,
+                prediction,
+                round(proba, 4)
+            ])
+
 
         return render_template('index.html', prediction=result, nba_teams=nba_teams)
 
