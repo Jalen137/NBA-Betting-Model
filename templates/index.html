@@ -18,52 +18,48 @@
     <div class="container">
         <h1>NBA Spread Predictor</h1>
         <p class="subheading">Enter betting lines to see if a team is likely to cover the spread</p>
-        
+
         <div id="loading" style="display:none;" class="prediction-box">
             <h2>Predicting...</h2>
         </div>
 
         <form method="post" action="/predict" class="form-grid">
-            <h3>Selected Team</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="team">Team</label>
-                    <select name="team" id="team" required>
-                        <option disabled selected value="">Select Team</option>
-                        {% for team in nba_teams %}
-                            <option value="{{ team }}">{{ team }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Moneyline</label>
-                    <input type="text" name="moneyline" placeholder="e.g. -140" required>
-                </div>
-                <div class="form-group">
-                    <label>Spread</label>
-                    <input type="text" name="spread" placeholder="e.g. +7.5" required>
-                </div>
-            </div>
-
-            <h3>Opponent</h3>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="opponent">Opponent</label>
-                    <select name="opponent" id="opponent" required>
-                        <option disabled selected value="">Select Opponent</option>
-                        {% for team in nba_teams %}
-                            <option value="{{ team }}">{{ team }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
+            <div class="form-group">
+                <label for="team">Team</label>
+                <select name="team" id="team" required>
+                    <option disabled selected value="">Select Team</option>
+                    {% for team in nba_teams %}
+                        <option value="{{ team }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
             </div>
 
             <div class="form-group">
-                <label>Total Points</label>
+                <label for="opponent">Opponent</label>
+                <select name="opponent" id="opponent" required>
+                    <option disabled selected value="">Select Opponent</option>
+                    {% for team in nba_teams %}
+                        <option value="{{ team }}">{{ team }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="spread">Spread</label>
+                <input type="text" name="spread" placeholder="e.g. +7.5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="moneyline">Moneyline</label>
+                <input type="text" name="moneyline" placeholder="e.g. -140" required>
+            </div>
+
+            <div class="form-group full-width">
+                <label for="total">Total Points</label>
                 <input type="text" name="total" placeholder="e.g. 203.5" required>
             </div>
 
-            <button type="submit">Predict</button>
+            <button type="submit" class="full-width-button">Predict</button>
         </form>
 
         {% if prediction %}
@@ -77,13 +73,12 @@
             <p>Project by Jalen Broxie • Data Science Portfolio</p>
         </footer>
     </div>
-    
+
     <script>
         function toggleDarkMode() {
             document.body.classList.toggle('dark');
         }
 
-        // Show loading spinner after form submit
         document.querySelector("form").addEventListener("submit", function () {
             document.getElementById("loading").style.display = "block";
         });

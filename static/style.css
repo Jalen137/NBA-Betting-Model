@@ -28,13 +28,11 @@ body {
 .container {
     width: 100%;
     max-width: 500px;
-    background-color: white;
+    background-color: var(--card-color);
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     text-align: center;
-    background-color: var(--card-color);
-
 }
 
 h1 {
@@ -51,44 +49,54 @@ h3 {
     font-weight: 600;
 }
 
-
 .subheading {
     font-size: 0.95rem;
     color: #5c6b7a;
     margin-bottom: 25px;
 }
 
-form {
+.form-grid {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 20px;
 }
 
-label {
-    font-weight: 500;
+.form-group {
+    display: flex;
+    flex-direction: column;
     text-align: left;
 }
 
-input[type="text"] {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1rem;
+.form-group label {
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
-button {
-    background-color: #0077cc;
-    color: white;
+.form-group input,
+.form-group select {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+.full-width-button {
+    width: 100%;
     padding: 12px;
     border: none;
-    border-radius: 8px;
+    background-color: var(--accent-color);
+    color: white;
     font-size: 1rem;
     font-weight: bold;
+    border-radius: 8px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:hover {
+.full-width-button:hover {
     background-color: #005fa3;
 }
 
@@ -106,36 +114,6 @@ footer {
     color: #999;
 }
 
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    margin-top: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-}
-
-.form-group label {
-    font-weight: 500;
-    margin-bottom: 5px;
-}
-
-.form-group input {
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-}
-
-input[type="text"],
-input[type="number"] {
-    background-color: var(--input-bg);
-    color: var(--text-color);
-}
 .toggle-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -191,15 +169,6 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(20px);
 }
-@media (max-width: 600px) {
-    .form-grid {
-        grid-template-columns: 1fr;
-    }
-
-    body {
-        padding: 20px;
-    }
-}
 
 #loading::after {
     content: "";
@@ -217,4 +186,22 @@ input:checked + .slider:before {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 20px;
+    }
+
+    .container {
+        padding: 20px;
+    }
+
+    .form-grid {
+        gap: 12px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
 }
