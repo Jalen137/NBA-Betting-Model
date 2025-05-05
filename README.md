@@ -4,7 +4,7 @@ A Flask web app that uses machine learning to predict whether an NBA team will c
 
 ## Live Demo
 
-[Click here to try it live]([https://your-app-name.onrender.com](https://nba-betting-model.onrender.com/predict))  
+[Click here to try it live]((https://nba-betting-model.onrender.com/predict))  
 
 
 ---
